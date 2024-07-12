@@ -168,7 +168,7 @@ const Home: NextPage = () => {
       .mint(
         "1",
         resolveNativeScriptHash(nativeScript),
-        Buffer.from("TEST", "utf-8").toString("hex") // Note that asset names are base16 encoded, so we cannot just input "TEST"
+        Buffer.from("TEST", "utf-8").toString("hex") // Note that asset names are base16 encoded, so we cannot just input "TEST", this results in "54455354"
       )
       .mintingScript(resolveNativeScriptHex(nativeScript))
       .changeAddress(changeAddress)
@@ -182,6 +182,18 @@ const Home: NextPage = () => {
       console.log(err);
     }
   };
+
+  // Exercise 2: Try to decode this cbor and find the following information:
+  // Inputs
+  // Outputs
+  // Mint
+  // transaction_witness_set.vkeywitness
+  // transaction_witness_set.native_script
+
+  // While this seems like a very simple transaction, there is actually a lot going on.
+  // In particular, an asset's identity is separated into two parts, something called a policy id, and the asset's name.
+  // Exercise 2a: Could you try and find information on what a policy id is? 
+  // After which, try to explain concisely what the above nativeScript is doing.
 
   return (
     <div className={styles.container}>
