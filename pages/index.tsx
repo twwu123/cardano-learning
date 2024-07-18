@@ -4,13 +4,14 @@ import { sendExample } from "./transactions/send";
 import { mintExample } from "./transactions/mint";
 import { BrowserWallet } from "@meshsdk/core";
 import { useEffect, useState } from "react";
+import { mintExample2 } from "./transactions/mint2";
 
 const Home: NextPage = () => {
   const [wallet, setWallet] = useState<BrowserWallet | null>(null);
 
   useEffect(() => {
     connectWallet();
-  }, []);
+  }, []); 
 
   const connectWallet = async () => {
     const eternlWallet = await BrowserWallet.enable("eternl");
@@ -49,6 +50,9 @@ const Home: NextPage = () => {
         }}
       >
         Mint Token
+      </button>
+      <button className={styles.button} onClick={() => mintExample2(wallet)}>
+        mint2
       </button>
     </div>
   );
