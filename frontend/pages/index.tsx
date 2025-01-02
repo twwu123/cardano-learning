@@ -5,7 +5,7 @@ import { mintExample } from "./transactions/id_mint";
 import { BrowserWallet } from "@meshsdk/core";
 import { useEffect, useState } from "react";
 import { spendExample } from "./transactions/spend";
-import { OracleMint } from "./transactions/mint_oracle";
+import { mintOracleCounter } from "./transactions/oracle_counter_mint";
 
 const Home: NextPage = () => {
   const [wallet, setWallet] = useState<BrowserWallet | null>(null);
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
             alert("Please connect wallet");
             return;
           }
-          OracleMint(wallet);
+          mintOracleCounter(wallet);
         }}
       >
         Mint Oracle Token
