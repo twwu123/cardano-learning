@@ -1,17 +1,18 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import { sendExample } from "./transactions/send";
-import { mintExample } from "./transactions/mint";
+import { mintExample } from "./transactions/id_mint";
 import { BrowserWallet } from "@meshsdk/core";
 import { useEffect, useState } from "react";
-import { mintExample2 } from "./transactions/mint2";
+import { spendExample } from "./transactions/spend";
+import { OracleMint } from "./transactions/mint_oracle";
 
 const Home: NextPage = () => {
   const [wallet, setWallet] = useState<BrowserWallet | null>(null);
 
   useEffect(() => {
     connectWallet();
-  }, []); 
+  }, []);
 
   const connectWallet = async () => {
     const eternlWallet = await BrowserWallet.enable("eternl");
@@ -51,8 +52,29 @@ const Home: NextPage = () => {
       >
         Mint Token
       </button>
-      <button className={styles.button} onClick={() => mintExample2(wallet)}>
-        mint2
+      <button
+        className={styles.button}
+        onClick={() => {
+          if (!wallet) {
+            alert("Please connect wallet");
+            return;
+          }
+          spendExample(wallet);
+        }}
+      >
+        Spend
+      </button>
+      <button
+        className={styles.button}
+        onClick={() => {
+          if (!wallet) {
+            alert("Please connect wallet");
+            return;
+          }
+          OracleMint(wallet);
+        }}
+      >
+        Mint Oracle Token
       </button>
     </div>
   );

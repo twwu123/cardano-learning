@@ -1,8 +1,11 @@
 import {
   BlockfrostProvider,
   BrowserWallet,
+  mConStr0,
   MeshTxBuilder,
+  resolvePlutusScriptAddress,
 } from "@meshsdk/core";
+import { applyCborEncoding } from "@meshsdk/core-csl";
 
 export const sendExample = async (wallet: BrowserWallet) => {
   if (!wallet) {
@@ -25,12 +28,7 @@ export const sendExample = async (wallet: BrowserWallet) => {
   });
 
   // Get utxos from wallet, with selection
-  const inputUtxos = await wallet?.getUtxos([
-    {
-      unit: "lovelace",
-      quantity: "5000000",
-    },
-  ]);
+  const inputUtxos = await wallet?.getUtxos();
 
   if (!inputUtxos) {
     alert(
@@ -40,22 +38,32 @@ export const sendExample = async (wallet: BrowserWallet) => {
   }
 
   // Add all selected inputs into the tx builder
-  for (let i = 0; i < inputUtxos.length; i++) {
-    const utxo = inputUtxos[i];
-    txBuilder.txIn(utxo.input.txHash, utxo.input.outputIndex);
-  }
+  // for (let i = 0; i < inputUtxos.length; i++) {
+  //   const utxo = inputUtxos[i];
+  //   txBuilder.txIn(utxo.input.txHash, utxo.input.outputIndex);
+  // }
 
   // Get change address from wallet
   const changeAddress = await wallet.getChangeAddress();
 
+  // const scriptAddress = resolvePlutusScriptAddress(
+  //   {
+  //     code: applyCborEncoding("5857010100323232323225333002323232323253330073370e900118041baa00113233224a260160026016601800260126ea800458c024c02800cc020008c01c008c01c004c010dd50008a4c26cacae6955ceaab9e5742ae89"),
+  //     version: "V3",
+  //   },
+  //   0
+  // );
+
   // Send 2 ADA back to our change address
   await txBuilder
-    .txOut(changeAddress, [
+    .txOut("addr_test1wzglwsx638upaa0fjfjw93yzl947jm82klu7g7g87s2dhxcrk4rqn", [
       {
         unit: "lovelace",
         quantity: "2000000",
       },
     ])
+    .txOutInlineDatumValue(mConStr0([]))
+    .selectUtxosFrom(inputUtxos)
     .changeAddress(changeAddress)
     .complete();
 
