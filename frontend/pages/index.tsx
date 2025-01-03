@@ -6,6 +6,7 @@ import { BrowserWallet } from "@meshsdk/core";
 import { useEffect, useState } from "react";
 import { spendExample } from "./transactions/spend";
 import { mintOracleCounter } from "./transactions/oracle_counter_mint";
+import { mintOracleNFT } from "./transactions/oracle_nft_mint";
 
 const Home: NextPage = () => {
   const [wallet, setWallet] = useState<BrowserWallet | null>(null);
@@ -59,10 +60,10 @@ const Home: NextPage = () => {
             alert("Please connect wallet");
             return;
           }
-          spendExample(wallet);
+          mintOracleNFT(wallet);
         }}
       >
-        Spend
+        mintOracleNFT
       </button>
       <button
         className={styles.button}
@@ -74,7 +75,7 @@ const Home: NextPage = () => {
           mintOracleCounter(wallet);
         }}
       >
-        Mint Oracle Token
+        mintOracleCounter
       </button>
     </div>
   );

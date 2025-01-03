@@ -83,9 +83,15 @@ export const mintOracleCounter = async (wallet: BrowserWallet) => {
         paramUtxo.output.address
       )
       .mintPlutusScriptV3()
-      .mint("1", idOracleCounterPolicyId, stringToHex("id_counter_oracle"))
+      .mint("1", idOracleCounterPolicyId, stringToHex("id_oracle_counter"))
       .mintingScript(idOracleCounterMintingScriptCbor)
-      .mintRedeemerValue(mConStr0([]))
+      .mintRedeemerValue(
+        JSON.stringify({
+          constructor: 0,
+          fields: [],
+        }),
+        "JSON"
+      )
       .txOut(idOracleCounterAddress, [
         { unit: idOracleCounterPolicyId, quantity: "1" },
       ])

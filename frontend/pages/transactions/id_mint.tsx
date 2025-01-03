@@ -87,15 +87,7 @@ export const mintExample = async (wallet: BrowserWallet) => {
       .mintRedeemerValue(
         JSON.stringify({
           constructor: 0,
-          fields: [
-            {
-              bytes: pubKeyHash,
-            },
-            {
-              constructor: 0,
-              fields: [],
-            },
-          ],
+          fields: [],
         }),
         "JSON"
       )
