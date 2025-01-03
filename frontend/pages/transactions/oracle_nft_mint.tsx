@@ -69,14 +69,21 @@ export const mintOracleNFT = async (wallet: BrowserWallet) => {
     [
       {
         constructor: 0,
-        fields: ["paramUtxo.input.txHash", paramUtxo.input.outputIndex],
+        fields: [
+          {
+            bytes: paramUtxo.input.txHash,
+          },
+          {
+            int: paramUtxo.input.outputIndex,
+          },
+        ],
       },
     ],
     "JSON"
   );
 
   const OracleNFTPolicyId = resolveScriptHash(OracleNFTMintingScriptCbor, "V3");
-
+  console.log(OracleNFTPolicyId);
   try {
     const unsignedTx = await txBuilder
       .txIn(
@@ -87,7 +94,7 @@ export const mintOracleNFT = async (wallet: BrowserWallet) => {
       )
       .mintPlutusScriptV3()
       .mint("1", OracleNFTPolicyId, stringToHex("oracle_nft"))
-      .mintingScript(OracleNFTPolicyId)
+      .mintingScript(OracleNFTMintingScriptCbor)
       .mintRedeemerValue(
         JSON.stringify({
           constructor: 0,
@@ -95,7 +102,9 @@ export const mintOracleNFT = async (wallet: BrowserWallet) => {
         }),
         "JSON"
       )
-      .txOut(OracleNFTAddress, [{ unit: OracleNFTPolicyId, quantity: "1" }])
+      .txOut(OracleNFTAddress, [
+        { unit: OracleNFTPolicyId + stringToHex("oracle_nft"), quantity: "1" },
+      ])
       .txOutInlineDatumValue(
         mConStr0([mPubKeyAddress(pubKeyHash, stakeCredentialHash)])
       )
